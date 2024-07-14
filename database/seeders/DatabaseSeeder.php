@@ -6,16 +6,17 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public function run()
-    {
-        $this->call([
-            RolesTableSeeder::class,
-            UsersTableSeeder::class,
-            AcademicYearsTableSeeder::class,
-            TeachersTableSeeder::class,
-            StudentsTableSeeder::class,
-            ClassesTableSeeder::class,
-            ClassAssignmentsTableSeeder::class,
-        ]);
-    }
+  public function run(): void
+  {
+    // isinya semua file seeder yang perlu di seed, jadi gausah satu satu
+    $this->call([
+      UserSeeder::class,
+      AdminSeeder::class,
+      GuruSeeder::class,
+      SiswaSeeder::class,
+      TahunAjaranSeeder::class,
+      KelasSeeder::class,
+      KelasSiswaSeeder::class,
+    ]);
+  }
 }
