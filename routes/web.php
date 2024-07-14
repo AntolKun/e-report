@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,13 @@ Route::get('/', function () {
 });
 Route::get('/login', [LoginController::class, 'index'])
     ->name('login');
+
+//admin controller start
+Route::get('/adminDashboard', [AdminController::class, 'index'])->name('adminDashboard');
+
+Route::get('/admin/tambahAdmin', [AdminController::class, 'tambahAdmin'])->name('tambahAdmin');
+
+Route::get('/admin/buatAdmin', [AdminController::class, 'create'])->name('buatAdmin');
+
+Route::post('/admin/buatAdminStore', [AdminController::class, 'store'])->name('buatAdminStore');
+
