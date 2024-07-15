@@ -28,5 +28,12 @@ Route::get('/admin/tambahAdmin', [AdminController::class, 'tambahAdmin'])->name(
 
 Route::get('/admin/buatAdmin', [AdminController::class, 'create'])->name('buatAdmin');
 
-Route::post('/admin/buatAdminStore', [AdminController::class, 'store'])->name('buatAdminStore');
+Route::post('/admin/add', [AdminController::class, 'store'])->name('buatAdminStore');
+
+Route::delete('/admin/hapus{id}', [AdminController::class, 'destroy'])->name('hapusAdmin');
+
+Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('editAdmin');
+
+Route::put('/admin/update/{id}', [AdminController::class, 'update'])->name('updateAdmin');
+
 

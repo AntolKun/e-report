@@ -26,6 +26,14 @@
   </div>
 </div>
 
+<div class="row mb-3 justify-content-end">
+  <div class="col-auto">
+    <a href="{{ route('buatAdmin') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Tambah Admin
+    </a>
+  </div>
+</div>
+
 <table id="dataAdmin" class="table table-striped" style="width:100%">
   <thead>
     <tr>
@@ -50,11 +58,11 @@
         @endif
       </td>
       <td>
-        <a href="" class="btn btn-warning">Edit</a>
-        <form action="" method="POST" style="display:inline-block;">
+        <a href="{{ route('editAdmin', $admin->id) }}" class="btn btn-warning">Edit</a style="display:inline-block;">
+        <button class="btn btn-danger" onclick="confirmDelete(`{{ $admin->id }}`)">Delete</button>
+        <form id="delete-form-{{ $admin->id }}" action="{{ route('hapusAdmin', $admin->id) }}" method="POST" style="display: none;">
           @csrf
           @method('DELETE')
-          <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin?')">Hapus</button>
         </form>
       </td>
     </tr>
@@ -94,4 +102,23 @@
   })
 </script>
 @endif
+
+<script>
+  function confirmDelete(adminId) {
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Data ini akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('delete-form-' + adminId).submit();
+      }
+    })
+  }
+</script>
+
 @endsection
