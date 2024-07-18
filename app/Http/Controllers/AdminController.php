@@ -18,10 +18,10 @@ class AdminController extends Controller
     return view('admin.Dashboard');
   }
 
-  public function tambahAdmin()
+  public function dataAdmin()
   {
     $admins = Admin::with('user')->get();
-    return view('admin.TambahAdmin', compact('admins'));
+    return view('admin.DataAdmin', compact('admins'));
   }
 
   public function create()
@@ -58,7 +58,7 @@ class AdminController extends Controller
         'foto' => $fotoPath ? 'admin_fotos/' . $request->file('foto')->getClientOriginalName() : null,
       ]);
 
-      return redirect()->route('tambahAdmin')->with('success', 'Data Berhasil Tersimpan');
+      return redirect()->route('dataAdmin')->with('success', 'Data Berhasil Tersimpan');
     } catch (\Exception $e) {
       Log::error('Error storing admin: ' . $e->getMessage());
       return back()->with('error', 'Terjadi kesalahan, data gagal tersimpan');
@@ -83,7 +83,7 @@ class AdminController extends Controller
       $admin->delete();
       $user->delete();
 
-      return redirect()->route('tambahAdmin')->with('success', 'Data berhasil dihapus');
+      return redirect()->route('dataAdmin')->with('success', 'Data berhasil dihapus');
     } catch (\Exception $e) {
       Log::error('Error deleting admin: ' . $e->getMessage());
       return back()->with('error', 'Terjadi kesalahan, data gagal dihapus');
@@ -125,7 +125,7 @@ class AdminController extends Controller
         'password' => $request->password ? Hash::make($request->password) : $user->password,
       ]);
 
-      return redirect()->route('tambahAdmin')->with('success', 'Data Admin Berhasil Diperbarui');
+      return redirect()->route('dataAdmin')->with('success', 'Data Admin Berhasil Diperbarui');
     } catch (\Exception $e) {
       Log::error('Error updating admin: ' . $e->getMessage());
       return back()->with('error', 'Terjadi kesalahan, data gagal diperbarui');

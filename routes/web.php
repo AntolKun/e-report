@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminGuruController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ Route::get('/login', [LoginController::class, 'index'])
 //admin controller start
 Route::get('/adminDashboard', [AdminController::class, 'index'])->name('adminDashboard');
 
-Route::get('/admin/tambahAdmin', [AdminController::class, 'tambahAdmin'])->name('tambahAdmin');
+Route::get('/admin/dataAdmin', [AdminController::class, 'dataAdmin'])->name('dataAdmin');
 
 Route::get('/admin/buatAdmin', [AdminController::class, 'create'])->name('buatAdmin');
 
@@ -35,5 +36,21 @@ Route::delete('/admin/hapus{id}', [AdminController::class, 'destroy'])->name('ha
 Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('editAdmin');
 
 Route::put('/admin/update/{id}', [AdminController::class, 'update'])->name('updateAdmin');
+
+
+Route::get('/guru/dataGuru', [AdminGuruController::class, 'index'])->name('dataGuru');
+
+Route::get('/guru/buatGuru', [AdminGuruController::class, 'create'])->name('buatGuru');
+
+Route::post('/guru/add', [AdminGuruController::class, 'store'])->name('buatGuruStore');
+
+Route::delete('/guru/hapus/{id}', [AdminGuruController::class, 'destroy'])->name('hapusGuru');
+
+Route::get('/guru/edit/{id}', [AdminGuruController::class, 'edit'])->name('editGuru');
+
+Route::put('/guru/update/{id}', [AdminGuruController::class, 'update'])->name('updateGuru');
+
+Route::get('/guru/show/{guru}', [AdminGuruController::class, 'show'])->name('showGuru');
+
 
 

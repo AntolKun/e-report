@@ -54,7 +54,7 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="/admin/tambahAdmin" aria-expanded="false">
+							<a class="sidebar-link" href="/admin/dataAdmin" aria-expanded="false">
 								<span>
 									<i class="ti ti-book"></i>
 								</span>
@@ -62,7 +62,7 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="index3.html" aria-expanded="false">
+							<a class="sidebar-link" href="/guru/dataGuru" aria-expanded="false">
 								<span>
 									<i class="ti ti-archive"></i>
 								</span>
