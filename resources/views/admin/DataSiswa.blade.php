@@ -1,19 +1,19 @@
 @extends('layouts.UserTemplate')
 @section('css')
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
 @endsection
 
 @section('content')
+
 <div class="card bg-light-info shadow-none position-relative overflow-hidden">
   <div class="card-body px-4 py-3">
     <div class="row align-items-center">
       <div class="col-9">
-        <h4 class="fw-semibold mb-8">Tambah Data Guru</h4>
+        <h4 class="fw-semibold mb-8">Data Siswa</h4>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a class="text-muted " href="/guruDashboard">Dashboard</a></li>
-            <li class="breadcrumb-item" aria-current="page">Tambah data guru</li>
+            <li class="breadcrumb-item"><a class="text-muted" href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item" aria-current="page">Data Siswa</li>
           </ol>
         </nav>
       </div>
@@ -26,50 +26,48 @@
   </div>
 </div>
 
+@if ($message = Session::get('success'))
+<div class="alert alert-success">
+  <p>{{ $message }}</p>
+</div>
+@endif
+
 <div class="row mb-3 justify-content-end">
   <div class="col-auto">
-    <a href="{{ route('buatGuru') }}" class="btn btn-primary">
-      <i class="fas fa-plus"></i> Tambah Guru
+    <a href="{{ route('buatSiswa') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Tambah Siswa
     </a>
   </div>
 </div>
 
-<table id="dataguru" class="table table-striped" style="width:100%">
+<table id="dataSiswa" class="table table-striped" style="width:100%">
   <thead>
     <tr>
+      <th>No</th>
       <th>Nama</th>
+      <th>NISN</th>
       <th>Jenis Kelamin</th>
-      <th>Tanggal Lahir</th>
-      <th>Agama</th>
       <th>Email</th>
       <th>Nomor Telepon</th>
-      <th>Foto</th>
       <th width="400px">Aksi</th>
     </tr>
   </thead>
   <tbody>
-    @foreach($gurus as $guru)
+    @foreach ($siswas as $siswa)
     <tr>
-      <td>{{ $guru->nama }}</td>
-      <td>{{ $guru->jenis_kelamin }}</td>
-      <td>{{ $guru->tanggal_lahir }}</td>
-      <td>{{ $guru->agama }}</td>
-      <td>{{ $guru->email }}</td>
-      <td>{{ $guru->nomor_telepon }}</td>
+      <td>{{ $loop->iteration }}</td>
+      <td>{{ $siswa->nama }}</td>
+      <td>{{ $siswa->nisn }}</td>
+      <td>{{ $siswa->jenis_kelamin }}</td>
+      <td>{{ $siswa->email }}</td>
+      <td>{{ $siswa->nomor_telepon }}</td>
       <td>
-        @if ($guru->foto)
-        <img src="{{ asset($guru->foto) }}" alt="Foto guru" width="50" height="50">
-        @else
-        Tidak ada foto
-        @endif
-      </td>
-      <td>
-        <a href="{{ route('showGuru', $guru->id) }}" class="btn btn-info">Lihat Detail</a>
-        <a href="{{ route('editGuru', $guru->id) }}" class="btn btn-warning">Edit</a>
-        <button class="btn btn-danger" onclick="confirmDelete('{{ $guru->id }}')">Delete</button>
-        <form id="delete-form-{{ $guru->id }}" action="{{ route('hapusGuru', $guru->id) }}" method="POST" style="display: none;">
+        <form action="{{ route('hapusSiswa', $siswa->id) }}" method="POST">
+          <a class="btn btn-info" href="{{ route('showSiswa', $siswa->id) }}">Lihat Detail</a>
+          <a class="btn btn-warning" href="{{ route('editSiswa', $siswa->id) }}">Edit</a>
           @csrf
           @method('DELETE')
+          <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       </td>
     </tr>
@@ -80,13 +78,12 @@
 @endsection
 
 @section('js')
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
 <script>
   $(document).ready(function() {
-    $('#dataguru').DataTable();
+    $('#dataSiswa').DataTable();
   });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -111,7 +108,7 @@
 @endif
 
 <script>
-  function confirmDelete(guruId) {
+  function confirmDelete(siswaId) {
     Swal.fire({
       title: 'Apakah Anda yakin?',
       text: "Data ini akan dihapus secara permanen!",
@@ -122,11 +119,9 @@
       confirmButtonText: 'Ya, hapus!'
     }).then((result) => {
       if (result.isConfirmed) {
-        document.getElementById('delete-form-' + guruId).submit();
+        document.getElementById('delete-form-' + siswaId).submit();
       }
     })
   }
 </script>
-
-
 @endsection

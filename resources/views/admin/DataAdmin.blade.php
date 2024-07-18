@@ -41,7 +41,7 @@
       <th>Email</th>
       <th>Username</th>
       <th>Foto</th>
-      <th>Aksi</th>
+      <th width="400px">Aksi</th>
     </tr>
   </thead>
   <tbody>

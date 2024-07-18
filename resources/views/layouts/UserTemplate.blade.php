@@ -70,7 +70,7 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="index4.html" aria-expanded="false">
+							<a class="sidebar-link" href="/siswa/dataSiswa" aria-expanded="false">
 								<span>
 									<i class="ti ti-medal"></i>
 								</span>
