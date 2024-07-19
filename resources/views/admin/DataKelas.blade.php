@@ -10,11 +10,11 @@
   <div class="card-body px-4 py-3">
     <div class="row align-items-center">
       <div class="col-9">
-        <h4 class="fw-semibold mb-8">Data Tahun Ajaran</h4>
+        <h4 class="fw-semibold mb-8">Data Kelas</h4>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a class="text-muted" href="/adminDashboard">Dashboard</a></li>
-            <li class="breadcrumb-item" aria-current="page">Tahun Ajaran</li>
+            <li class="breadcrumb-item"><a class="text-muted " href="/guruDashboard">Dashboard</a></li>
+            <li class="breadcrumb-item" aria-current="page">Data kelas</li>
           </ol>
         </nav>
       </div>
@@ -27,33 +27,49 @@
   </div>
 </div>
 
+@if ($message = session()->get('success'))
+<div class="alert alert-success">
+  {{ $message }}
+</div>
+@endif
+
+@if ($message = session()->get('error'))
+<div class="alert alert-danger">
+  {{ $message }}
+</div>
+@endif
+
 <div class="row mb-3 justify-content-end">
   <div class="col-auto">
-    <a href="{{ route('buatTahunAjaran') }}" class="btn btn-primary">
-      <i class="fas fa-plus"></i> Tambah Tahun Ajaran
+    <a href="{{ route('dataKelas') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Tambah Guru
     </a>
   </div>
 </div>
 
-<table id="dataTable" class="table table-striped table-bordered">
+<table id="datakelas" class="table table-striped" style="width:100%">
   <thead>
     <tr>
       <th>No</th>
+      <th>Nama Kelas</th>
       <th>Tahun Ajaran</th>
+      <th>Guru</th>
       <th>Aksi</th>
     </tr>
   </thead>
   <tbody>
-    @foreach ($tahunAjaran as $index => $tahunAjaran)
+    @foreach($kelas as $index => $kls)
     <tr>
       <td>{{ $index + 1 }}</td>
-      <td>{{ $tahunAjaran->tahun_ajaran }}</td>
+      <td>{{ $kls->nama_kelas }}</td>
+      <td>{{ $kls->tahunAjaran->tahun_ajaran }}</td>
+      <td>{{ $kls->guru->nama }}</td>
       <td>
-        <a href="{{ route('editTahunAjaran', $tahunAjaran->id) }}" class="btn btn-warning">Edit</a>
-        <button class="btn btn-danger" onclick="confirmDelete('{{ $tahunAjaran->id }}')">Delete</button>
-        <form id="delete-form-{{ $tahunAjaran->id }}" action="{{ route('hapusTahunAjaran', $tahunAjaran->id) }}" method="POST" style="display: none;">
+        <a href="{{ route('dataKelas', $kls->id) }}" class="btn btn-warning">Edit</a>
+        <form action="{{ route('dataKelas', $kls->id) }}" method="POST" style="display:inline;">
           @csrf
           @method('DELETE')
+          <button type="submit" class="btn btn-danger">Hapus</button>
         </form>
       </td>
     </tr>
@@ -64,15 +80,15 @@
 @endsection
 
 @section('js')
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
 <script>
   $(document).ready(function() {
-    $('#dataTable').DataTable();
+    $('#datakelas').DataTable();
   });
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if ($message = session()->get('success'))
 <script type="text/javascript">
@@ -95,7 +111,7 @@
 @endif
 
 <script>
-  function confirmDelete(tahunAjaranId) {
+  function confirmDelete(guruId) {
     Swal.fire({
       title: 'Apakah Anda yakin?',
       text: "Data ini akan dihapus secara permanen!",
@@ -106,9 +122,11 @@
       confirmButtonText: 'Ya, hapus!'
     }).then((result) => {
       if (result.isConfirmed) {
-        document.getElementById('delete-form-' + tahunAjaranId).submit();
+        document.getElementById('delete-form-' + guruId).submit();
       }
     })
   }
 </script>
+
+
 @endsection

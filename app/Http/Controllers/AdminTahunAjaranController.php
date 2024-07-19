@@ -4,51 +4,76 @@ namespace App\Http\Controllers;
 
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminTahunAjaranController extends Controller
 {
   public function index()
   {
-    $tahunAjarans = TahunAjaran::all();
-    return view('admin.DataTahunAjaran', compact('tahunAjarans'));
+    $tahunAjaran = TahunAjaran::all();
+    return view('admin.DataTahunAjaran', compact('tahunAjaran'));
   }
 
   public function create()
   {
-    return view('tahun_ajaran.create');
+    return view('admin.FormTambahTahunAjaran');
   }
 
   public function store(Request $request)
   {
     $request->validate([
-      'tahun_ajaran' => 'required|unique:tahun_ajarans,tahun_ajaran',
+      'tahun_ajaran' => 'required|string|unique:tahun_ajaran',
     ]);
 
-    TahunAjaran::create($request->all());
+    try {
+      TahunAjaran::create([
+        'tahun_ajaran' => $request->tahun_ajaran,
+      ]);
 
-    return redirect()->route('tahunAjaran.index')->with('success', 'Tahun Ajaran berhasil ditambahkan.');
+      return redirect()->route('dataTahunAjaran')->with('success', 'Tahun Ajaran berhasil disimpan.');
+    } catch (\Exception $e) {
+      Log::error('Error storing tahun ajaran: ' . $e->getMessage());
+      return back()->withInput()->with('error', 'Terjadi kesalahan, data Tahun Ajaran gagal disimpan.');
+    }
   }
 
-  public function edit(TahunAjaran $tahunAjaran)
+  public function edit($id)
   {
-    return view('tahun_ajaran.edit', compact('tahunAjaran'));
+    $tahunAjaran = TahunAjaran::findOrFail($id);
+    return view('admin.FormEditTahunAjaran', compact('tahunAjaran'));
   }
 
-  public function update(Request $request, TahunAjaran $tahunAjaran)
+  public function update(Request $request, $id)
   {
     $request->validate([
-      'tahun_ajaran' => 'required|unique:tahun_ajarans,tahun_ajaran,' . $tahunAjaran->id,
+      'tahun_ajaran' => 'required|unique:tahun_ajaran'
     ]);
 
-    $tahunAjaran->update($request->all());
+    try {
+      $tahunAjaran = TahunAjaran::findOrFail($id);
 
-    return redirect()->route('tahunAjaran.index')->with('success', 'Tahun Ajaran berhasil diperbarui.');
+      $tahunAjaran->update([
+        'tahun_ajaran' => $request->tahun_ajaran,
+      ]);
+
+      return redirect()->route('dataTahunAjaran')->with('success', 'Data Tahun Ajaran berhasil diperbarui.');
+    } catch (\Exception $e) {
+      Log::error('Error updating tahun ajaran: ' . $e->getMessage());
+      return back()->withInput()->with('error', 'Terjadi kesalahan, data Tahun Ajaran gagal diperbarui.');
+    }
   }
 
-  public function destroy(TahunAjaran $tahunAjaran)
+  public function destroy($id)
   {
-    $tahunAjaran->delete();
+    try {
+      $tahunAjaran = TahunAjaran::findOrFail($id);
 
-    return redirect()->route('tahunAjaran.index')->with('success', 'Tahun Ajaran berhasil dihapus.');
+      $tahunAjaran->delete();
+
+      return redirect()->route('dataTahunAjaran')->with('success', 'Data Tahun Ajaran Berhasil Dihapus');
+    } catch (\Exception $e) {
+      Log::error('Error deleting tahun ajar: ' . $e->getMessage());
+      return back()->with('error', 'Terjadi kesalahan, data gagal dihapus');
+    }
   }
 }

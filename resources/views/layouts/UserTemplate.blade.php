@@ -66,7 +66,7 @@
 								<span>
 									<i class="ti ti-archive"></i>
 								</span>
-								<span class="hide-menu">Tambah Guru</span>
+								<span class="hide-menu">Data Guru</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
@@ -74,7 +74,23 @@
 								<span>
 									<i class="ti ti-medal"></i>
 								</span>
-								<span class="hide-menu">Tambah Siswa</span>
+								<span class="hide-menu">Data Siswa</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="/tahun/dataTahunAjaran" aria-expanded="false">
+								<span>
+									<i class="ti ti-medal"></i>
+								</span>
+								<span class="hide-menu">Data Tahun Pelajaran</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="/kelas/dataKelas" aria-expanded="false">
+								<span>
+									<i class="ti ti-medal"></i>
+								</span>
+								<span class="hide-menu">Data Kelas</span>
 							</a>
 						</li>
 					</ul>

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminGuruController;
 use App\Http\Controllers\AdminSiswaController;
 use App\Http\Controllers\AdminTahunAjaranController;
+use App\Http\Controllers\AdminKelasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,3 +62,6 @@ Route::post('/tahun/add', [AdminTahunAjaranController::class, 'store'])->name('b
 Route::delete('/tahun/hapus/{id}', [AdminTahunAjaranController::class, 'destroy'])->name('hapusTahunAjaran');
 Route::get('/tahun/edit/{id}', [AdminTahunAjaranController::class, 'edit'])->name('editTahunAjaran');
 Route::put('/tahun/update/{id}', [AdminTahunAjaranController::class, 'update'])->name('updateTahunAjaran');
+
+//data kelas
+Route::get('/kelas/dataKelas', [AdminKelasController::class, 'index'])->name('dataKelas');
