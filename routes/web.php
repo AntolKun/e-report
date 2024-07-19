@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminGuruController;
 use App\Http\Controllers\AdminSiswaController;
+use App\Http\Controllers\AdminTahunAjaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +54,10 @@ Route::get('/siswa/edit/{id}', [AdminSiswaController::class, 'edit'])->name('edi
 Route::put('/siswa/update/{id}', [AdminSiswaController::class, 'update'])->name('updateSiswa');
 Route::get('/siswa/show/{siswa}', [AdminSiswaController::class, 'show'])->name('showSiswa');
 
+//data tahun ajaran
+Route::get('/tahun/dataTahunAjaran', [AdminTahunAjaranController::class, 'index'])->name('dataTahunAjaran');
+Route::get('/tahun/buatTahunAjaran', [AdminTahunAjaranController::class, 'create'])->name('buatTahunAjaran');
+Route::post('/tahun/add', [AdminTahunAjaranController::class, 'store'])->name('buatTahunAjaranStore');
+Route::delete('/tahun/hapus/{id}', [AdminTahunAjaranController::class, 'destroy'])->name('hapusTahunAjaran');
+Route::get('/tahun/edit/{id}', [AdminTahunAjaranController::class, 'edit'])->name('editTahunAjaran');
+Route::put('/tahun/update/{id}', [AdminTahunAjaranController::class, 'update'])->name('updateTahunAjaran');

@@ -26,12 +26,6 @@
   </div>
 </div>
 
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-  <p>{{ $message }}</p>
-</div>
-@endif
-
 <div class="row mb-3 justify-content-end">
   <div class="col-auto">
     <a href="{{ route('buatSiswa') }}" class="btn btn-primary">
@@ -49,6 +43,7 @@
       <th>Jenis Kelamin</th>
       <th>Email</th>
       <th>Nomor Telepon</th>
+      <th>Foto</th>
       <th width="400px">Aksi</th>
     </tr>
   </thead>
@@ -62,12 +57,19 @@
       <td>{{ $siswa->email }}</td>
       <td>{{ $siswa->nomor_telepon }}</td>
       <td>
-        <form action="{{ route('hapusSiswa', $siswa->id) }}" method="POST">
-          <a class="btn btn-info" href="{{ route('showSiswa', $siswa->id) }}">Lihat Detail</a>
-          <a class="btn btn-warning" href="{{ route('editSiswa', $siswa->id) }}">Edit</a>
+        @if ($siswa->foto)
+        <img src="{{ asset($siswa->foto) }}" alt="Foto siswa" width="50" height="50">
+        @else
+        Tidak ada foto
+        @endif
+      </td>
+      <td>
+        <a class="btn btn-info" href="{{ route('showSiswa', $siswa->id) }}">Lihat Detail</a>
+        <a class="btn btn-warning" href="{{ route('editSiswa', $siswa->id) }}">Edit</a>
+        <button class="btn btn-danger" onclick="confirmDelete('{{ $siswa->id }}')">Delete</button>
+        <form id="delete-form-{{ $siswa->id }}" action="{{ route('hapusSiswa', $siswa->id) }}" method="POST" style="display: none;">
           @csrf
           @method('DELETE')
-          <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       </td>
     </tr>

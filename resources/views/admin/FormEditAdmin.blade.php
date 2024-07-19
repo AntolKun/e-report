@@ -69,10 +69,10 @@
         <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto</small>
       </div>
     </div>
-    <div class="col-md-6 my-4">
-      @if ($admin->foto)
+    <div class="col-md-6 my-4 text-center">
       <strong>Foto:</strong>
-      <img src="{{ asset($admin->foto) }}" alt="Foto admin" class="img-fluid" style="max-width: 100%;">
+      @if ($admin->foto)
+      <img src="{{ asset($admin->foto) }}" alt="Foto ad$admin" class="img-fluid" style="max-width: 100%;">
       @else
       <p>Tidak ada foto</p>
       @endif

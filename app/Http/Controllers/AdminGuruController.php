@@ -83,10 +83,63 @@ class AdminGuruController extends Controller
     return view('admin.FormEditGuru', compact('guru'));
   }
 
+  // public function update(Request $request, $id)
+  // {
+  //   $request->validate([
+  //     'username' => 'required|unique:users,username,' . $request->user_id,
+  //     'password' => 'nullable|min:6',
+  //     'nama' => 'required',
+  //     'jenis_kelamin' => 'required',
+  //     'tanggal_lahir' => 'required|date',
+  //     'agama' => 'required',
+  //     'email' => 'required|email|unique:gurus,email,' . $id,
+  //     'nomor_telepon' => 'required|unique:gurus,nomor_telepon,' . $id,
+  //     'foto' => 'nullable|image',
+  //   ]);
+
+  //   try {
+  //     $guru = Guru::findOrFail($id);
+  //     $user = User::findOrFail($guru->user_id);
+
+  //     if ($request->hasFile('foto')) {
+  //       // Hapus foto lama jika ada
+  //       if ($guru->foto && file_exists(public_path('guru_fotos/' . $guru->foto))) {
+  //         unlink(public_path('guru_fotos/' . $guru->foto));
+  //       }
+
+  //       // Upload foto baru
+  //       $fotoPath = $request->file('foto')->move(public_path('guru_fotos'), $request->file('foto')->getClientOriginalName());
+  //       $guru->foto = 'guru_fotos/' . $request->file('foto')->getClientOriginalName();
+  //     }
+
+  //     $guru->update([
+  //       'nama' => $request->nama,
+  //       'jenis_kelamin' => $request->jenis_kelamin,
+  //       'tanggal_lahir' => $request->tanggal_lahir,
+  //       'agama' => $request->agama,
+  //       'email' => $request->email,
+  //       'nomor_telepon' => $request->nomor_telepon,
+  //     ]);
+
+  //     $user->update([
+  //       'username' => $request->username,
+  //       'password' => $request->password ? Hash::make($request->password) : $user->password,
+  //     ]);
+
+  //     return redirect()->route('dataGuru')->with('success', 'Data Guru Berhasil Diperbarui');
+  //   } catch (\Exception $e) {
+  //     Log::error('Error updating guru: ' . $e->getMessage());
+  //     return back()->with('error', 'Terjadi kesalahan, data gagal diperbarui');
+  //   }
+  // }
+
   public function update(Request $request, $id)
   {
+    $guru = Guru::findOrFail($id);
+    $user = User::findOrFail($guru->user_id);
+
     $request->validate([
-      'username' => 'required|unique:users,username,' . $request->user_id,
+      'username' => 'required|unique:users,username,' . $user->id,
       'password' => 'nullable|min:6',
       'nama' => 'required',
       'jenis_kelamin' => 'required',
@@ -98,9 +151,6 @@ class AdminGuruController extends Controller
     ]);
 
     try {
-      $guru = Guru::findOrFail($id);
-      $user = User::findOrFail($guru->user_id);
-
       if ($request->hasFile('foto')) {
         // Hapus foto lama jika ada
         if ($guru->foto && file_exists(public_path('guru_fotos/' . $guru->foto))) {
@@ -129,7 +179,9 @@ class AdminGuruController extends Controller
       return redirect()->route('dataGuru')->with('success', 'Data Guru Berhasil Diperbarui');
     } catch (\Exception $e) {
       Log::error('Error updating guru: ' . $e->getMessage());
-      return back()->with('error', 'Terjadi kesalahan, data gagal diperbarui');
+      return back()->with('error',
+        'Terjadi kesalahan, data gagal diperbarui'
+      );
     }
   }
 

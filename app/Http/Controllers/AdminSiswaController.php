@@ -18,7 +18,7 @@ class AdminSiswaController extends Controller
 
   public function create()
   {
-    return view('siswa.create');
+    return view('admin.FormTambahSiswa');
   }
 
   public function store(Request $request)
@@ -27,7 +27,9 @@ class AdminSiswaController extends Controller
       'username' => 'required|unique:users',
       'password' => 'required|min:6',
       'nama' => 'required',
+      'nisn' => 'required|unique:siswas',
       'jenis_kelamin' => 'required',
+      'tempat_lahir' => 'required',
       'tanggal_lahir' => 'required|date',
       'agama' => 'required',
       'email' => 'required|email|unique:siswas',
@@ -39,29 +41,32 @@ class AdminSiswaController extends Controller
       $user = User::create([
         'username' => $request->username,
         'password' => Hash::make($request->password),
+        'role' => 'siswa',
       ]);
 
       $fotoPath = null;
       if ($request->hasFile('foto')) {
-        $fotoPath = $request->file('foto')->move(public_path('siswa_fotos'), $request->file('foto')->getClientOriginalName());
-        $fotoPath = 'siswa_fotos/' . $request->file('foto')->getClientOriginalName();
+        $fotoPath = $request->file('foto')->getClientOriginalName();
+        $request->file('foto')->move(public_path('siswa_fotos'), $fotoPath);
       }
 
       Siswa::create([
         'user_id' => $user->id,
         'nama' => $request->nama,
+        'nisn' => $request->nisn,
         'jenis_kelamin' => $request->jenis_kelamin,
+        'tempat_lahir' => $request->tempat_lahir,
         'tanggal_lahir' => $request->tanggal_lahir,
         'agama' => $request->agama,
         'email' => $request->email,
         'nomor_telepon' => $request->nomor_telepon,
-        'foto' => $fotoPath,
+        'foto' => $fotoPath ? 'siswa_fotos/' . $request->file('foto')->getClientOriginalName() : null,
       ]);
 
-      return redirect()->route('siswas.index')->with('success', 'Siswa berhasil ditambahkan');
+      return redirect()->route('dataSiswa')->with('success', 'Data Siswa berhasil disimpan.');
     } catch (\Exception $e) {
-      Log::error('Error creating siswa: ' . $e->getMessage());
-      return back()->with('error', 'Terjadi kesalahan, data gagal disimpan');
+      Log::error('Error storing siswa: ' . $e->getMessage());
+      return back()->withInput()->with('error', 'Terjadi kesalahan, data Siswa gagal disimpan.');
     }
   }
 
@@ -74,7 +79,7 @@ class AdminSiswaController extends Controller
   public function edit($id)
   {
     $siswa = Siswa::findOrFail($id);
-    return view('siswa.edit', compact('siswa'));
+    return view('admin.FormEditSiswa', compact('siswa'));
   }
 
   public function update(Request $request, $id)
@@ -86,7 +91,9 @@ class AdminSiswaController extends Controller
       'username' => 'required|unique:users,username,' . $user->id,
       'password' => 'nullable|min:6',
       'nama' => 'required',
+      'nisn' => 'required|unique:siswas,nisn,' . $id,
       'jenis_kelamin' => 'required',
+      'tempat_lahir' => 'required',
       'tanggal_lahir' => 'required|date',
       'agama' => 'required',
       'email' => 'required|email|unique:siswas,email,' . $id,
@@ -97,8 +104,8 @@ class AdminSiswaController extends Controller
     try {
       if ($request->hasFile('foto')) {
         // Hapus foto lama jika ada
-        if ($siswa->foto && file_exists(public_path($siswa->foto))) {
-          unlink(public_path($siswa->foto));
+        if ($siswa->foto && file_exists(public_path('siswa_fotos/' . $siswa->foto))) {
+          unlink(public_path('siswa_fotos/' . $siswa->foto));
         }
 
         // Upload foto baru
@@ -108,7 +115,9 @@ class AdminSiswaController extends Controller
 
       $siswa->update([
         'nama' => $request->nama,
+        'nisn' => $request->nisn,
         'jenis_kelamin' => $request->jenis_kelamin,
+        'tempat_lahir' => $request->tempat_lahir,
         'tanggal_lahir' => $request->tanggal_lahir,
         'agama' => $request->agama,
         'email' => $request->email,
@@ -120,7 +129,7 @@ class AdminSiswaController extends Controller
         'password' => $request->password ? Hash::make($request->password) : $user->password,
       ]);
 
-      return redirect()->route('siswas.index')->with('success', 'Data Siswa Berhasil Diperbarui');
+      return redirect()->route('dataSiswa')->with('success', 'Data Siswa Berhasil Diperbarui');
     } catch (\Exception $e) {
       Log::error('Error updating siswa: ' . $e->getMessage());
       return back()->with('error', 'Terjadi kesalahan, data gagal diperbarui');
@@ -141,7 +150,7 @@ class AdminSiswaController extends Controller
       $siswa->delete();
       $user->delete();
 
-      return redirect()->route('siswas.index')->with('success', 'Data Siswa Berhasil Dihapus');
+      return redirect()->route('dataSiswa')->with('success', 'Data Siswa Berhasil Dihapus');
     } catch (\Exception $e) {
       Log::error('Error deleting siswa: ' . $e->getMessage());
       return back()->with('error', 'Terjadi kesalahan, data gagal dihapus');

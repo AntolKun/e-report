@@ -1,15 +1,16 @@
 @extends('layouts.UserTemplate')
+
 @section('content')
 
 <div class="card bg-light-info shadow-none position-relative overflow-hidden">
   <div class="card-body px-4 py-3">
     <div class="row align-items-center">
       <div class="col-9">
-        <h4 class="fw-semibold mb-8">Edit Data Guru</h4>
+        <h4 class="fw-semibold mb-8">Tambah Data Siswa</h4>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a class="text-muted" href="/guruDashboard">Dashboard</a></li>
-            <li class="breadcrumb-item" aria-current="page">Edit data guru</li>
+            <li class="breadcrumb-item"><a class="text-muted" href="/adminDashboard">Dashboard</a></li>
+            <li class="breadcrumb-item" aria-current="page">Tambah data siswa</li>
           </ol>
         </nav>
       </div>
@@ -23,7 +24,7 @@
 </div>
 
 @if ($errors->any())
-<div>
+<div class="alert alert-danger">
   <strong>Error!</strong> There were some problems with your input.<br><br>
   <ul>
     @foreach ($errors->all() as $error)
@@ -33,86 +34,87 @@
 </div>
 @endif
 
-<form action="{{ route('updateGuru', $guru->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('buatSiswaStore') }}" method="POST" enctype="multipart/form-data">
   @csrf
-  @method('PUT')
   <div class="row">
     <div class="col-md-6 my-4">
       <div>
         <strong>Username:</strong>
-        <input type="text" class="form-control" name="username" value="{{ old('username', $guru->user->username) }}">
+        <input type="text" class="form-control" name="username" value="{{ old('username') }}">
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Password:</strong>
         <input type="password" class="form-control" name="password">
-        <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password</small>
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Nama:</strong>
-        <input type="text" class="form-control" name="nama" value="{{ old('nama', $guru->nama) }}">
+        <input type="text" class="form-control" name="nama" value="{{ old('nama') }}">
+      </div>
+    </div>
+    <div class="col-md-6 my-4">
+      <div>
+        <strong>NISN:</strong>
+        <input type="text" class="form-control" name="nisn" value="{{ old('nisn') }}">
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Jenis Kelamin:</strong>
         <select class="form-select" name="jenis_kelamin">
-          <option value="Laki-Laki" {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
-          <option value="Perempuan" {{ old('jenis_kelamin', $guru->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+          <option value="Laki-Laki" {{ old('jenis_kelamin') == 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
+          <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
         </select>
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
+        <strong>Tempat Lahir:</strong>
+        <input type="text" class="form-control" name="tempat_lahir" value="{{ old('tempat_lahir') }}">
+      </div>
+    </div>
+    <div class="col-md-6 my-4">
+      <div>
         <strong>Tanggal Lahir:</strong>
-        <input type="date" class="form-control" name="tanggal_lahir" value="{{ old('tanggal_lahir', $guru->tanggal_lahir) }}">
+        <input type="date" class="form-control" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}">
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Agama:</strong>
         <select class="form-select" name="agama">
-          <option value="Islam" {{ $guru->agama == 'Islam' ? 'selected' : '' }}>Islam</option>
-          <option value="Kristen" {{ $guru->agama == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-          <option value="Katolik" {{ $guru->agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-          <option value="Hindu" {{ $guru->agama == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-          <option value="Buddha" {{ $guru->agama == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-          <option value="Konghucu" {{ $guru->agama == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+          <option value="Islam">Islam</option>
+          <option value="Kristen">Kristen</option>
+          <option value="Katolik">Katolik</option>
+          <option value="Hindu">Hindu</option>
+          <option value="Buddha">Buddha</option>
+          <option value="Lainnya">Lainnya</option>
         </select>
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Email:</strong>
-        <input type="email" class="form-control" name="email" value="{{ old('email', $guru->email) }}">
+        <input type="email" class="form-control" name="email" value="{{ old('email') }}">
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Nomor Telepon:</strong>
-        <input type="text" class="form-control" name="nomor_telepon" value="{{ old('nomor_telepon', $guru->nomor_telepon) }}">
+        <input type="text" class="form-control" name="nomor_telepon" value="{{ old('nomor_telepon') }}">
       </div>
     </div>
     <div class="col-md-6 my-4">
       <div>
         <strong>Foto:</strong>
         <input type="file" class="form-control" name="foto">
-        <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto</small>
       </div>
     </div>
-    <div class="col-md-6 my-4 text-center">
-      <strong>Foto:</strong>
-      @if ($guru->foto)
-      <img src="{{ asset($guru->foto) }}" alt="Foto guru" class="img-fluid" style="max-width: 100%;">
-      @else
-      <p>Tidak ada foto</p>
-      @endif
-    </div>
-    <div>
-      <button type="submit" class="mt-4 btn btn-rounded btn-success text-black">Perbarui Guru</button>
+    <div class="col-md-12 my-4">
+      <button type="submit" class="btn btn-rounded btn-success text-black">Simpan</button>
     </div>
   </div>
 </form>
