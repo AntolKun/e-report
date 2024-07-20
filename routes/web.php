@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminGuruController;
 use App\Http\Controllers\AdminSiswaController;
 use App\Http\Controllers\AdminTahunAjaranController;
 use App\Http\Controllers\AdminKelasController;
+use App\Http\Controllers\AdminKelasSiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,3 +66,17 @@ Route::put('/tahun/update/{id}', [AdminTahunAjaranController::class, 'update'])-
 
 //data kelas
 Route::get('/kelas/dataKelas', [AdminKelasController::class, 'index'])->name('dataKelas');
+Route::delete('/kelas/hapus/{id}', [AdminKelasController::class, 'destroy'])->name('hapusKelas');
+Route::get('/kelas/buatKelas', [AdminKelasController::class, 'create'])->name('buatKelas');
+Route::post('/kelas/add', [AdminKelasController::class, 'store'])->name('buatKelasStore');
+
+//data kelas siswa
+// Route::prefix('kelas/{kelas}')->group(function () {
+//     Route::get('siswa', [AdminKelasSiswaController::class, 'index'])->name('dataKelasSiswa');
+//     Route::post('siswa', [AdminKelasSiswaController::class, 'store'])->name('simpanKelasSiswa');
+//     Route::delete('siswa/{id}', [AdminKelasSiswaController::class, 'destroy'])->name('hapusKelasSiswa');
+// });
+Route::get('/kelas/{kelas}/dataKelas', [AdminKelasSiswaController::class, 'index'])->name('dataKelasSiswa');
+Route::post('/kelas/{kelas}/assign', [AdminKelasSiswaController::class, 'store'])->name('simpanKelasSiswa');
+Route::delete('/kelas/{kelas}/remove/{id}', [AdminKelasSiswaController::class, 'destroy'])->name('hapusKelasSiswa');
+

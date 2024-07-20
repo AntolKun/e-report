@@ -27,22 +27,10 @@
   </div>
 </div>
 
-@if ($message = session()->get('success'))
-<div class="alert alert-success">
-  {{ $message }}
-</div>
-@endif
-
-@if ($message = session()->get('error'))
-<div class="alert alert-danger">
-  {{ $message }}
-</div>
-@endif
-
 <div class="row mb-3 justify-content-end">
   <div class="col-auto">
-    <a href="{{ route('dataKelas') }}" class="btn btn-primary">
-      <i class="fas fa-plus"></i> Tambah Guru
+    <a href="{{ route('buatKelas') }}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Tambah Kelas
     </a>
   </div>
 </div>
@@ -65,11 +53,12 @@
       <td>{{ $kls->tahunAjaran->tahun_ajaran }}</td>
       <td>{{ $kls->guru->nama }}</td>
       <td>
+        <a href="{{ route('dataKelasSiswa', $kls->id) }}" class="btn btn-info">Assignment</a>
         <a href="{{ route('dataKelas', $kls->id) }}" class="btn btn-warning">Edit</a>
-        <form action="{{ route('dataKelas', $kls->id) }}" method="POST" style="display:inline;">
+        <button class="btn btn-danger" onclick="confirmDelete('{{ $kls->id }}')">Delete</button>
+        <form id="delete-form-{{ $kls->id }}" action="{{ route('hapusKelas', $kls->id) }}" method="POST" style="display: none;">
           @csrf
           @method('DELETE')
-          <button type="submit" class="btn btn-danger">Hapus</button>
         </form>
       </td>
     </tr>
@@ -111,7 +100,7 @@
 @endif
 
 <script>
-  function confirmDelete(guruId) {
+  function confirmDelete(kelasId) {
     Swal.fire({
       title: 'Apakah Anda yakin?',
       text: "Data ini akan dihapus secara permanen!",
@@ -122,7 +111,7 @@
       confirmButtonText: 'Ya, hapus!'
     }).then((result) => {
       if (result.isConfirmed) {
-        document.getElementById('delete-form-' + guruId).submit();
+        document.getElementById('delete-form-' + kelasId).submit();
       }
     })
   }

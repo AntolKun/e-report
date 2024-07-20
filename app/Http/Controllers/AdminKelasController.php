@@ -20,7 +20,7 @@ class AdminKelasController extends Controller
   {
     $tahunAjarans = TahunAjaran::all();
     $gurus = Guru::all();
-    return view('kelas.create', compact('tahunAjarans', 'gurus'));
+    return view('admin.FormTambahKelas', compact('tahunAjarans', 'gurus'));
   }
 
   public function store(Request $request)
@@ -38,7 +38,7 @@ class AdminKelasController extends Controller
         'guru_id' => $request->guru_id,
       ]);
 
-      return redirect()->route('kelas.index')->with('success', 'Data Kelas berhasil disimpan.');
+      return redirect()->route('dataKelas')->with('success', 'Data Kelas berhasil disimpan.');
     } catch (\Exception $e) {
       Log::error('Error storing kelas: ' . $e->getMessage());
       return back()->withInput()->with('error', 'Terjadi kesalahan, data Kelas gagal disimpan.');
@@ -82,7 +82,7 @@ class AdminKelasController extends Controller
     try {
       $kelas = Kelas::findOrFail($id);
       $kelas->delete();
-      return redirect()->route('kelas.index')->with('success', 'Data Kelas berhasil dihapus.');
+      return redirect()->route('dataKelas')->with('success', 'Data Kelas berhasil dihapus.');
     } catch (\Exception $e) {
       Log::error('Error deleting kelas: ' . $e->getMessage());
       return back()->with('error', 'Terjadi kesalahan, data Kelas gagal dihapus.');
