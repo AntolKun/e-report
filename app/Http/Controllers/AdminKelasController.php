@@ -50,7 +50,7 @@ class AdminKelasController extends Controller
     $kelas = Kelas::findOrFail($id);
     $tahunAjarans = TahunAjaran::all();
     $gurus = Guru::all();
-    return view('kelas.edit', compact('kelas', 'tahunAjarans', 'gurus'));
+    return view('admin.FormEditKelas', compact('kelas', 'tahunAjarans', 'gurus'));
   }
 
   public function update(Request $request, $id)
@@ -70,7 +70,7 @@ class AdminKelasController extends Controller
         'guru_id' => $request->guru_id,
       ]);
 
-      return redirect()->route('kelas.index')->with('success', 'Data Kelas berhasil diperbarui.');
+      return redirect()->route('dataKelas')->with('success', 'Data Kelas berhasil diperbarui.');
     } catch (\Exception $e) {
       Log::error('Error updating kelas: ' . $e->getMessage());
       return back()->withInput()->with('error', 'Terjadi kesalahan, data Kelas gagal diperbarui.');

@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminGuruController;
 use App\Http\Controllers\AdminSiswaController;
 use App\Http\Controllers\AdminTahunAjaranController;
 use App\Http\Controllers\AdminKelasController;
 use App\Http\Controllers\AdminKelasSiswaController;
+use App\Http\Controllers\DimensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +24,11 @@ use App\Http\Controllers\AdminKelasSiswaController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login', [LoginController::class, 'index'])
-    ->name('login');
 
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 //admin controller start
 
 Route::get('/adminDashboard', [AdminController::class, 'index'])->name('adminDashboard');
@@ -66,9 +69,11 @@ Route::put('/tahun/update/{id}', [AdminTahunAjaranController::class, 'update'])-
 
 //data kelas
 Route::get('/kelas/dataKelas', [AdminKelasController::class, 'index'])->name('dataKelas');
-Route::delete('/kelas/hapus/{id}', [AdminKelasController::class, 'destroy'])->name('hapusKelas');
 Route::get('/kelas/buatKelas', [AdminKelasController::class, 'create'])->name('buatKelas');
 Route::post('/kelas/add', [AdminKelasController::class, 'store'])->name('buatKelasStore');
+Route::get('/kelas/edit/{id}', [AdminKelasController::class, 'edit'])->name('editKelas');
+Route::put('/kelas/update/{id}', [AdminKelasController::class, 'update'])->name('updateKelas');
+Route::delete('/kelas/hapus/{id}', [AdminKelasController::class, 'destroy'])->name('hapusKelas');
 
 //data kelas siswa
 // Route::prefix('kelas/{kelas}')->group(function () {
@@ -80,3 +85,10 @@ Route::get('/kelas/{kelas}/dataKelas', [AdminKelasSiswaController::class, 'index
 Route::post('/kelas/{kelas}/assign', [AdminKelasSiswaController::class, 'store'])->name('simpanKelasSiswa');
 Route::delete('/kelas/{kelas}/remove/{id}', [AdminKelasSiswaController::class, 'destroy'])->name('hapusKelasSiswa');
 
+
+Route::get('/dimensi', [DimensiController::class, 'index'])->name('DataDimensi');
+Route::get('/dimensi/create', [DimensiController::class, 'create'])->name('dimensi.create');
+Route::post('/dimensi', [DimensiController::class, 'store'])->name('dimensi.store');
+Route::get('/dimensi/{dimensi}/edit', [DimensiController::class, 'edit'])->name('dimensi.edit');
+Route::put('/dimensi/{dimensi}', [DimensiController::class, 'update'])->name('dimensi.update');
+Route::delete('/dimensi/{dimensi}', [DimensiController::class, 'destroy'])->name('dimensi.destroy');

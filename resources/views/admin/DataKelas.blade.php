@@ -53,8 +53,8 @@
       <td>{{ $kls->tahunAjaran->tahun_ajaran }}</td>
       <td>{{ $kls->guru->nama }}</td>
       <td>
-        <a href="{{ route('dataKelasSiswa', $kls->id) }}" class="btn btn-info">Assignment</a>
-        <a href="{{ route('dataKelas', $kls->id) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ route('dataKelasSiswa', $kls->id) }}" class="btn btn-info">Tambah Murid</a>
+        <a href="{{ route('editKelas', $kls->id) }}" class="btn btn-warning">Edit</a>
         <button class="btn btn-danger" onclick="confirmDelete('{{ $kls->id }}')">Delete</button>
         <form id="delete-form-{{ $kls->id }}" action="{{ route('hapusKelas', $kls->id) }}" method="POST" style="display: none;">
           @csrf

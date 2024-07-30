@@ -13,7 +13,7 @@
 	<meta name="author" content="Riski Fummmi" />
 	<meta name="keywords" content="Web e-Report" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logosma.png') }}" />
+	<link rel="shortcut icon" type="image/png" href="{{ asset('dist/images/logosma.png') }}" />
 	<link rel="stylesheet" href="{{ asset('dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
 	<link id="themeColors" rel="stylesheet" href="{{ asset('dist/css/style.min.css') }}" />
 	@yield('css')
@@ -26,8 +26,8 @@
 			<div>
 				<div class="brand-logo d-flex align-items-center justify-content-between">
 					<a href="index.html" class="text-nowrap logo-img">
-						<img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/dark-logo.svg" class="dark-logo" width="180" alt="" />
-						<img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/light-logo.svg" class="light-logo" width="180" alt="" />
+						<img src="{{ asset('dist/images/logosma.png') }}" class="dark-logo" width="180" alt="" />
+						<img src="{{ asset('dist/images/logosma.png') }}" class="light-logo" width="180" alt="" />
 					</a>
 					<div class="close-btn d-lg-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
 						<i class="ti ti-x fs-8 text-muted"></i>
@@ -128,8 +128,8 @@
 						</li>
 					</ul>
 					<div class="d-block d-lg-none">
-						<img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/dark-logo.svg" class="dark-logo" width="180" alt="" />
-						<img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/light-logo.svg" class="light-logo" width="180" alt="" />
+						<img src="{{ asset('dist/images/logosma.png') }}" class="dark-logo" width="180" alt="" />
+						<img src="{{ asset('dist/images/logosma.png') }}" class="light-logo" width="180" alt="" />
 					</div>
 					<button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="p-2">
