@@ -17,4 +17,22 @@ class Siswa extends Model
   {
     return $this->belongsTo(User::class);
   }
+
+  public function proyek()
+  {
+    return $this->belongsToMany(Proyek::class, 'proyek_siswa')
+    ->withPivot('file_path', 'file_link', 'status')
+    ->withTimestamps();
+  }
+
+  public function proyekSiswa()
+  {
+    return $this->hasMany(ProyekSiswa::class);
+  }
+
+  public function kelas()
+  {
+    return $this->belongsToMany(Kelas::class, 'kelas_siswa');
+  }
+
 }

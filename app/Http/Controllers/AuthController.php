@@ -5,37 +5,40 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
-  public function showLoginForm()
-  {
-    return view('auth.Login');
-  }
-
   public function login(Request $request)
   {
-    $credentials = $request->only('username', 'password');
-
     $request->validate([
-      'username' => 'required',
-      'password' => 'required',
+      'username' => 'required|string',
+      'password' => 'required|string',
     ]);
+
+    $credentials = $request->only('username', 'password');
 
     if (Auth::attempt($credentials)) {
       $user = Auth::user();
-      return redirect()->intended('/dashboard')->with('success', 'Login berhasil!');
+      switch ($user->role) {
+        case 'admin':
+          return redirect()->route('adminDashboard');
+        case 'guru':
+          return redirect()->route('guru.classes');
+        case 'siswa':
+          // Redirect siswa to their classes page
+          return redirect()->route('siswa.kelas');
+      }
     }
 
     return back()->withErrors([
-      'username' => 'The provided credentials do not match our records.',
-    ])->onlyInput('username');
+      'username' => 'Username atau password salah.',
+    ]);
   }
 
   public function logout()
   {
     Auth::logout();
-    return redirect('/login')->with('success', 'Logout berhasil!');
+    return redirect('/login');
   }
 }
+

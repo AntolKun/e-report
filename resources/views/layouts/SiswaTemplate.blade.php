@@ -46,29 +46,11 @@
             <!-- Dashboard -->
             <!-- =================== -->
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/proyek" aria-expanded="false">
+              <a class="sidebar-link" href="/siswa/kelas" aria-expanded="false">
                 <span>
                   <i class="ti ti-home"></i>
                 </span>
-                <span class="hide-menu">Project Kelas</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/guru/classes" aria-expanded="false">
-                <span>
-                  <i class="ti ti-home"></i>
-                </span>
-                <span class="hide-menu">Kelas Anda</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/dimensi" aria-expanded="false">
-                <span>
-                  <i class="ti ti-home"></i>
-                </span>
-                <span class="hide-menu">Dimensi</span>
+                <span class="hide-menu">Kelas</span>
               </a>
             </li>
           </ul>
@@ -77,9 +59,9 @@
             <div class="d-flex">
               <div class="unlimited-access-title">
                 @php
-                $guru = \App\Models\Guru::where('user_id', Auth::id())->first();
+                $siswa = \App\Models\Siswa::where('user_id', Auth::id())->first();
                 @endphp
-                <h1 class="fw-semibold fs-4 mb-6 text-dark w-85">{{ $guru->nama }}</h1>
+                <h1 class="fw-semibold fs-4 mb-6 text-dark w-85">{{ $siswa->nama }}</h1>
                 <form action="{{ route('logout') }}" method="POST">
                   @csrf
                   <button type="submit" class="btn btn-primary fs-2 fw-semibold lh-sm">Logout</button>

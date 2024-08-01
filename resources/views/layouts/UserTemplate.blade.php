@@ -94,6 +94,21 @@
 							</a>
 						</li>
 					</ul>
+
+					<div class="unlimited-access hide-menu bg-light-primary position-relative my-7 rounded">
+						<div class="d-flex">
+							<div class="unlimited-access-title">
+								@php
+								$admin = \App\Models\Admin::where('user_id', Auth::id())->first();
+								@endphp
+								<h1 class="fw-semibold fs-4 mb-6 text-dark w-85">{{ $admin->nama }}</h1>
+								<form action="{{ route('logout') }}" method="POST">
+									@csrf
+									<button type="submit" class="btn btn-primary fs-2 fw-semibold lh-sm">Logout</button>
+								</form>
+							</div>
+						</div>
+					</div>
 				</nav>
 				<!-- End Sidebar navigation -->
 				<div class="fixed-profile p-3 bg-light-secondary rounded sidebar-ad mt-3">

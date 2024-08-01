@@ -26,6 +26,11 @@ class User extends Authenticatable
         return $this->hasOne(Admin::class);
     }
 
+    public function guru()
+    {
+        return $this->hasOne(Guru::class);
+    }
+
     // public function guru()
     // {
     //     return $this->hasOne(Guru::class);
