@@ -12,6 +12,8 @@ use App\Http\Controllers\KelasGuruController;
 use App\Http\Controllers\DimensiController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\FileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -122,5 +124,11 @@ Route::middleware(['role:guru'])->group(function () {
 Route::middleware(['role:siswa'])->group(function () {
     Route::get('/siswa/kelas', [SiswaController::class, 'myClasses'])->name('siswa.kelas');
     Route::get('/siswa/kelas/{id}', [SiswaController::class, 'detail'])->name('siswa.kelas.detail');
+    Route::get('/siswa/proyek/{id}', [SiswaController::class, 'proyekDetail'])->name('siswa.proyek.detail');
+    Route::get('/siswa/proyek/{id}/submit', [SiswaController::class, 'submitWorkForm'])->name('siswa.proyek.submit');
+    Route::post('/siswa/proyek/{id}/submit', [SiswaController::class, 'submitWork'])
+    ->middleware('auth')
+    ->name('siswa.proyek.submit.post');
+    Route::get('/siswa/proyek/{id}/download/{fileName}', [SiswaController::class, 'downloadFile'])->name('siswa.proyek.download');
 });
 
