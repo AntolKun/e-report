@@ -118,7 +118,7 @@ Route::middleware(['role:guru'])->group(function () {
     //
     Route::get('/proyek/{id}', [ProyekController::class, 'show'])->name('proyek.show');
     Route::get('/proyek/{proyek}/siswa', [ProyekController::class, 'getSiswa'])->name('proyek.siswa');
-    Route::get('/guru/proyek/{id}/download/{fileName}', [ProyekController::class, 'downloadFile'])->name('proyek.download');
+    Route::get('/guru/proyek/{id}/download/{fileName}', [ProyekController::class, 'downloadFile'])->name('guru.proyek.download');
 
 });
 
