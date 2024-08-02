@@ -120,7 +120,6 @@ class ProyekController extends Controller
 
   public function show($id)
   {
-    // Memuat proyek bersama dengan proyekSiswa dan siswa terkait
     $proyek = Proyek::with('proyekSiswa.siswa')->findOrFail($id);
     return view('guru.KelasProyekDetail', compact('proyek'));
   }
@@ -130,7 +129,7 @@ class ProyekController extends Controller
     $userRole = Auth::user()->role;
 
     if ($userRole === 'guru') {
-      $proyekSiswa = ProyekSiswa::where('proyek_id', $id)->first(); // Teachers can access all submissions
+      $proyekSiswa = ProyekSiswa::where('proyek_id', $id)->first();
     } elseif ($userRole === 'siswa') {
       $proyekSiswa = ProyekSiswa::where('proyek_id', $id)
         ->where('siswa_id', Auth::user()->siswa->id)
@@ -143,14 +142,13 @@ class ProyekController extends Controller
       return back()->with('error', 'File not found.');
     }
 
-    // The file is now stored in the public/uploads/proyek directory
     $filePath = public_path($proyekSiswa->file_path);
 
     if (!file_exists($filePath)) {
-      return back()->with('error', 'File not found. Path: ' . $filePath);
+      return back()->with('error', 'File not found.');
     }
 
-    return response()->download($filePath, basename($filePath), [
+    return response()->file($filePath, [
       'Content-Type' => mime_content_type($filePath),
       'Content-Disposition' => 'attachment; filename="' . basename($filePath) . '"'
     ]);

@@ -39,7 +39,7 @@
         </td>
         <td>
           @if($ps->file_path)
-          <a href="{{ route('proyek.download', ['id' => $proyek->id, 'fileName' => basename($ps->file_path)]) }}">
+          <a href="{{ route('guru.proyek.download', ['id' => $proyek->id, 'fileName' => basename($ps->file_path)]) }}">
             Download File
           </a>
           @else

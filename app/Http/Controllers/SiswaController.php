@@ -60,9 +60,8 @@ class SiswaController extends Controller
 
   public function submitWork(Request $request, $id)
   {
-    // Update validation rules: both fields are optional, but at least one must be provided
     $request->validate([
-      'file' => 'nullable|file|mimes:pdf,docx,zip,xlsx,xls,ppt,pptx,jpeg,jpg,png,mp4,avi,mkv,zip,rar|max:5120',
+      'file' => 'nullable|file|mimes:pdf,docx,zip,xlsx,xls,ppt,pptx,jpeg,jpg,png,mp4,avi,mkv,zip,rar,mp3|max:5120',
       'file_link' => 'nullable|url',
     ]);
 
@@ -93,8 +92,6 @@ class SiswaController extends Controller
     }
 
     $fileLink = $request->input('file_link');
-
-    // Ensure that at least one of filePath or fileLink is provided
     if (is_null($filePath) && is_null($fileLink)) {
       return redirect()->route('siswa.proyek.detail', $id)->with('error', 'Kirimkan File atau Link (pilih salah satu)');
     }
@@ -114,20 +111,30 @@ class SiswaController extends Controller
     return redirect()->route('siswa.proyek.detail', $id)->with('success', 'Pekerjaan berhasil disubmit.');
   }
 
+
   public function downloadFile($id, $fileName)
   {
-    $proyekSiswa = ProyekSiswa::where('proyek_id', $id)
-      ->where('siswa_id', Auth::user()->siswa->id)
-      ->first();
+    $userRole = Auth::user()->role;
+    $proyekSiswa = null;
+
+    if ($userRole === 'guru') {
+      $proyekSiswa = ProyekSiswa::where('proyek_id', $id)->first();
+    } elseif ($userRole === 'siswa') {
+      $proyekSiswa = ProyekSiswa::where('proyek_id', $id)
+        ->where('siswa_id', Auth::user()->siswa->id)
+        ->first();
+    } else {
+      return back()->with('error', 'Unauthorized access.');
+    }
 
     if (!$proyekSiswa || !$proyekSiswa->file_path) {
       return back()->with('error', 'File not found.');
     }
 
-    $filePath = public_path('uploads/proyek/' . $fileName);
+    $filePath = public_path($proyekSiswa->file_path);
 
     if (!file_exists($filePath)) {
-      return back()->with('error', 'File not found.');
+      return back()->with('error', 'File not found. Path: ' . $filePath);
     }
 
     return response()->download($filePath, $fileName, [
@@ -135,4 +142,5 @@ class SiswaController extends Controller
       'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
     ]);
   }
+
 }

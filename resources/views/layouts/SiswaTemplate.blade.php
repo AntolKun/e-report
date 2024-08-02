@@ -273,7 +273,7 @@
   <script type="text/javascript">
     Swal.fire({
       icon: 'error',
-      title: 'Waduh!',
+      title: 'Alamak!',
       text: '{{ $message }}',
     })
   </script>

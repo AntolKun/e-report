@@ -2,7 +2,7 @@
 
 @section('content')
 <h1>Warning</h1>
-<h5>Untuk pengiriman file PDF, RAR, dan ZIP, menggunakanan Google Drive, lalu kirimkan ke kolom link !</h5>
+<h5>Untuk pengiriman file PDF, RAR, dan ZIP, menggunakan Google Drive, lalu kirimkan ke kolom link!</h5>
 <div class="card bg-light-info shadow-none position-relative overflow-hidden">
   <div class="card-body px-4 py-3">
     <h4 class="fw-semibold mb-8">Submit Work for Proyek: {{ $proyek->tema_proyek }}</h4>
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   Swal.fire({
     icon: 'error',
-    title: 'Waduh!',
+    title: 'Alamak!',
     text: '{{ $message }}',
   })
 </script>
