@@ -16,7 +16,6 @@ class ProyekController extends Controller
 {
   public function index(Request $request)
   {
-    // Ambil data kelas dan proyek
     $guru = Auth::user()->guru;
     $kelasId = $request->input('kelas_id');
     $query = Proyek::where('guru_id', $guru->id);
@@ -26,9 +25,8 @@ class ProyekController extends Controller
     }
 
     $proyek = $query->get();
-    $kelas = $guru->kelas; // Asumsi guru memiliki relasi dengan kelas
+    $kelas = $guru->kelas;
 
-    // Ambil data dimensi
     $dimensi = Dimensi::all();
 
     return view('guru.DataProyek', compact('proyek', 'kelas', 'dimensi'));
@@ -144,5 +142,38 @@ class ProyekController extends Controller
     ]);
   }
 
+  public function updateKeterangan(Request $request, $id)
+  {
+    $request->validate([
+      'keterangan' => 'nullable|string',
+    ]);
+
+    $proyekSiswa = ProyekSiswa::find($id);
+    if (!$proyekSiswa) {
+      return back()->with('error', 'Record tidak ditemukan.');
+    }
+
+    $proyekSiswa->keterangan = $request->input('keterangan');
+    $proyekSiswa->save();
+
+    return back()->with('success', 'Keterangan berhasil diperbarui.');
+  }
+
+  public function saveKeterangan(Request $request, $id)
+  {
+    $request->validate([
+      'keterangan' => 'required|string',
+      'siswa_id' => 'required|integer|exists:siswas,id',
+    ]);
+
+    $proyekSiswa = ProyekSiswa::where('proyek_id', $id)
+      ->where('siswa_id', $request->siswa_id)
+      ->firstOrFail();
+
+    $proyekSiswa->keterangan = $request->keterangan;
+    $proyekSiswa->save();
+
+    return redirect()->route('proyek.show', $id)->with('success', 'Keterangan berhasil disimpan.');
+  }
 
 }
