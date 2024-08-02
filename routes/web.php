@@ -118,6 +118,7 @@ Route::middleware(['role:guru'])->group(function () {
     //
     Route::get('/proyek/{id}', [ProyekController::class, 'show'])->name('proyek.show');
     Route::get('/proyek/{proyek}/siswa', [ProyekController::class, 'getSiswa'])->name('proyek.siswa');
+    Route::get('/guru/proyek/{id}/download/{fileName}', [ProyekController::class, 'downloadFile'])->name('proyek.download');
 
 });
 
@@ -127,8 +128,7 @@ Route::middleware(['role:siswa'])->group(function () {
     Route::get('/siswa/proyek/{id}', [SiswaController::class, 'proyekDetail'])->name('siswa.proyek.detail');
     Route::get('/siswa/proyek/{id}/submit', [SiswaController::class, 'submitWorkForm'])->name('siswa.proyek.submit');
     Route::post('/siswa/proyek/{id}/submit', [SiswaController::class, 'submitWork'])
-    ->middleware('auth')
-    ->name('siswa.proyek.submit.post');
+        ->middleware('auth')
+        ->name('siswa.proyek.submit.post');
     Route::get('/siswa/proyek/{id}/download/{fileName}', [SiswaController::class, 'downloadFile'])->name('siswa.proyek.download');
 });
-

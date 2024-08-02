@@ -60,43 +60,45 @@ class SiswaController extends Controller
 
   public function submitWork(Request $request, $id)
   {
-    // Validasi request
+    // Update validation rules: both fields are optional, but at least one must be provided
     $request->validate([
-      'file' => 'required|file|mimes:pdf,docx,zip|max:2048',
+      'file' => 'nullable|file|mimes:pdf,docx,zip,xlsx,xls,ppt,pptx,jpeg,jpg,png,mp4,avi,mkv,zip,rar|max:5120',
       'file_link' => 'nullable|url',
     ]);
 
-    // Temukan proyek berdasarkan ID
     $proyek = Proyek::find($id);
 
     if (!$proyek) {
-      return redirect()->route('siswa.index')->with('error', 'Proyek not found.');
+      return redirect()->route('siswa.proyek.detail', $id)->with('error', 'Proyek not found.');
     }
 
-    // Ambil user yang sedang login
     $user = Auth::user();
 
     if (!$user) {
       return redirect()->route('login')->with('error', 'User not authenticated.');
     }
 
-    // Ambil siswa terkait
     $siswa = $user->siswa;
 
     if (!$siswa) {
       return redirect()->route('login')->with('error', 'Siswa record not found.');
     }
 
-    // Proses upload file
     $filePath = null;
     if ($request->hasFile('file')) {
       $file = $request->file('file');
       $fileName = time() . '-' . $file->getClientOriginalName();
-      $filePath = $file->move(public_path('uploads/proyek'), $fileName);
       $filePath = 'uploads/proyek/' . $fileName;
+      $file->move(public_path('uploads/proyek'), $fileName);
     }
 
-    // Simpan data proyek siswa
+    $fileLink = $request->input('file_link');
+
+    // Ensure that at least one of filePath or fileLink is provided
+    if (is_null($filePath) && is_null($fileLink)) {
+      return redirect()->route('siswa.proyek.detail', $id)->with('error', 'Kirimkan File atau Link (pilih salah satu)');
+    }
+
     ProyekSiswa::updateOrCreate(
       [
         'proyek_id' => $proyek->id,
@@ -104,34 +106,33 @@ class SiswaController extends Controller
       ],
       [
         'file_path' => $filePath,
-        'file_link' => $request->input('file_link'), // Simpan link yang diinputkan
-        'status' => true, // Gunakan nilai boolean true untuk status sudah mengerjakan
+        'file_link' => $fileLink,
+        'status' => true,
       ]
     );
 
-    return redirect()->route('siswa.proyek.detail')->with('success', 'Pekerjaan berhasil disubmit.');
+    return redirect()->route('siswa.proyek.detail', $id)->with('success', 'Pekerjaan berhasil disubmit.');
   }
 
   public function downloadFile($id, $fileName)
   {
-    // Temukan proyek siswa berdasarkan ID proyek dan ID siswa
     $proyekSiswa = ProyekSiswa::where('proyek_id', $id)
       ->where('siswa_id', Auth::user()->siswa->id)
       ->first();
 
     if (!$proyekSiswa || !$proyekSiswa->file_path) {
-      return redirect()->route('siswa.index')->with('error', 'File not found.');
+      return back()->with('error', 'File not found.');
     }
 
-    // Tentukan path lengkap ke file di folder public
     $filePath = public_path('uploads/proyek/' . $fileName);
 
-    // Cek apakah file ada
     if (!file_exists($filePath)) {
-      return redirect()->route('siswa.index')->with('error', 'File not found.');
+      return back()->with('error', 'File not found.');
     }
 
-    // Unduh file
-    return response()->download($filePath);
+    return response()->download($filePath, $fileName, [
+      'Content-Type' => mime_content_type($filePath),
+      'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+    ]);
   }
 }

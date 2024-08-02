@@ -16,6 +16,7 @@
         <th>Nama Siswa</th>
         <th>Status</th>
         <th>Link File</th>
+        <th>File</th>
       </tr>
     </thead>
     <tbody>
@@ -32,6 +33,15 @@
         <td>
           @if($ps->file_link)
           <a href="{{ $ps->file_link }}" target="_blank">Lihat File</a>
+          @else
+          -
+          @endif
+        </td>
+        <td>
+          @if($ps->file_path)
+          <a href="{{ route('proyek.download', ['id' => $proyek->id, 'fileName' => basename($ps->file_path)]) }}">
+            Download File
+          </a>
           @else
           -
           @endif

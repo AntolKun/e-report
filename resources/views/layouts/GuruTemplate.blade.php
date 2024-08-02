@@ -45,14 +45,6 @@
             <!-- =================== -->
             <!-- Dashboard -->
             <!-- =================== -->
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/proyek" aria-expanded="false">
-                <span>
-                  <i class="ti ti-home"></i>
-                </span>
-                <span class="hide-menu">Project Kelas</span>
-              </a>
-            </li>
 
             <li class="sidebar-item">
               <a class="sidebar-link" href="/guru/classes" aria-expanded="false">
@@ -62,6 +54,16 @@
                 <span class="hide-menu">Kelas Anda</span>
               </a>
             </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/proyek" aria-expanded="false">
+                <span>
+                  <i class="ti ti-home"></i>
+                </span>
+                <span class="hide-menu">Project Kelas</span>
+              </a>
+            </li>
+
 
             <li class="sidebar-item">
               <a class="sidebar-link" href="/dimensi" aria-expanded="false">
