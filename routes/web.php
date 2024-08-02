@@ -121,7 +121,7 @@ Route::middleware(['role:guru'])->group(function () {
     Route::get('/guru/proyek/{id}/download/{fileName}', [ProyekController::class, 'downloadFile'])->name('guru.proyek.download');
     Route::post('/proyek_siswa/{id}/keterangan', [ProyekController::class, 'updateKeterangan'])->name('proyek_siswa.update_keterangan');
     Route::post('/guru/proyek/{id}/keterangan', [ProyekController::class, 'saveKeterangan'])->name('guru.proyek.saveKeterangan');
-
+    Route::get('/proyek/{id}/raport', [ProyekController::class, 'generatePdf'])->name('proyek.generatePdf');
 });
 
 Route::middleware(['role:siswa'])->group(function () {

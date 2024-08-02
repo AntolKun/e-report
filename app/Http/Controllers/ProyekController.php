@@ -10,6 +10,8 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\SiswaProyek;
 
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+
 use Illuminate\Support\Facades\Auth;
 
 class ProyekController extends Controller
@@ -174,6 +176,30 @@ class ProyekController extends Controller
     $proyekSiswa->save();
 
     return redirect()->route('proyek.show', $id)->with('success', 'Keterangan berhasil disimpan.');
+  }
+
+  public function generatePdf($id)
+  {
+    $proyek = Proyek::with(['proyekSiswa.siswa', 'kelas', 'dimensi'])->findOrFail($id);
+
+    // Pastikan $proyek->kelas memiliki data
+    $data = $proyek->proyekSiswa->where('status', true)->map(function ($ps) {
+      return [
+        'nama' => $ps->siswa->nama,
+        'status' => $ps->status ? 'Sudah Mengerjakan' : 'Belum Mengerjakan',
+        'file_link' => $ps->file_link ? 'Ada' : 'Tidak Ada',
+        'file_path' => $ps->file_path ? 'Ada' : 'Tidak Ada',
+        'tanggal_submit' => $ps->updated_at->format('d-m-Y H:i:s'),
+        'keterangan' => $ps->keterangan,
+      ];
+    });
+
+    $pdf = FacadePdf::loadView('guru.RaportPDF', [
+      'proyek' => $proyek,
+      'data' => $data,
+    ]);
+
+    return $pdf->download('raport-proyek-' . $proyek->id . '.pdf');
   }
 
 }

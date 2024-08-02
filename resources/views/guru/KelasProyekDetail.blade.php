@@ -3,11 +3,13 @@
 @section('content')
 <div class="container">
   <h1>Detail Proyek</h1>
-  <h2>{{ $proyek->tema_proyek }}</h2>
+  <h2 class="mt-4">Topik: {{ $proyek->tema_proyek }}</h2>
   <p><strong>Dimensi:</strong> {{ $proyek->dimensi->dimensi }}</p>
   <p><strong>Elemen 1:</strong> {{ $proyek->elemen_1 }}</p>
   <p><strong>Sub Elemen:</strong> {{ $proyek->sub_elemen }}</p>
   <p><strong>Tanggal Deadline:</strong> {{ $proyek->tanggal_deadline }}</p>
+
+  <a href="{{ route('proyek.generatePdf', $proyek->id) }}" class="btn btn-success mb-3">Unduh Laporan PDF</a>
 
   <h3>Status Pengerjaan Siswa</h3>
   <table class="table">
