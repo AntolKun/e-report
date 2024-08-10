@@ -36,7 +36,7 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password">
                   </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
+                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Login</button>
                   @if ($errors->any())
                   <div class="alert alert-danger">
                     <ul>

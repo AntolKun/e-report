@@ -10,12 +10,17 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Guru;
+use App\Models\Siswa;
 
 class AdminController extends Controller
 {
   public function index()
   {
-    return view('admin.Dashboard');
+    $admin = Admin::count();
+    $guru = Guru::count();
+    $siswa = Siswa::count();
+    return view('admin.Dashboard', compact('admin', 'guru', 'siswa'));
   }
 
   public function dataAdmin()
